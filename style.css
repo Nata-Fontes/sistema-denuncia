@@ -1,0 +1,777 @@
+/* =========================================================================
+   style.css
+   Sistema Web de Denúncias Anônimas — folha de estilos única, compartilhada
+   por index.html, denunciante.html, admin-login.html e admin.html.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. Tokens (variáveis de design)
+   ----------------------------------------------------------------------- */
+:root {
+  /* Cores institucionais */
+  --navy-900: #0d1526;
+  --navy-800: #10192b;
+  --navy-700: #1c2b45;
+  --navy-600: #2c3e5c;
+
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --border: #dde1e6;
+  --border-strong: #b9c0c9;
+
+  --ink: #1b1f27;
+  --ink-soft: #545b66;
+  --ink-faint: #838c99;
+
+  /* Ação do denunciante (alerta / registrar) */
+  --accent-denuncia: #a83232;
+  --accent-denuncia-dark: #832424;
+
+  /* Ação do administrador (institucional / confirmar) */
+  --accent-admin: #1f6f6b;
+  --accent-admin-dark: #17534f;
+
+  /* Cores de status */
+  --status-recebida: #6b7280;
+  --status-em_analise: #b8860b;
+  --status-em_investigacao: #2b5f8c;
+  --status-concluida: #1f7a5c;
+  --status-arquivada: #9aa0a6;
+
+  /* Tipografia */
+  --font-display: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Espaçamento e forma */
+  --radius: 4px;
+  --radius-lg: 6px;
+  --gap: 1rem;
+  --shadow-soft: 0 1px 2px rgba(13, 21, 38, 0.06);
+  --max-width: 76rem;
+}
+
+/* -------------------------------------------------------------------------
+   2. Reset básico
+   ----------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--navy-900);
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+  font-weight: 600;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.15rem; }
+
+p { margin: 0 0 1em; max-width: 68ch; }
+
+a { color: var(--accent-admin-dark); }
+
+img, svg { max-width: 100%; display: block; }
+
+button {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Acessibilidade: foco visível em qualquer elemento navegável por teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--navy-700);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* -------------------------------------------------------------------------
+   3. Cabeçalho institucional
+   ----------------------------------------------------------------------- */
+.cabecalho {
+  background: var(--navy-900);
+  color: #eef1f5;
+  border-bottom: 3px solid var(--navy-600);
+}
+
+.cabecalho__conteudo {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: #eef1f5;
+}
+
+.marca__selo {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.marca__texto {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.marca__titulo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.marca__subtitulo {
+  font-size: 0.75rem;
+  color: #b7c0cd;
+}
+
+.cabecalho__acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.cabecalho__acoes .etiqueta-perfil {
+  color: #b7c0cd;
+}
+
+/* -------------------------------------------------------------------------
+   4. Layout geral
+   ----------------------------------------------------------------------- */
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.rodape {
+  text-align: left;
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   5. Botões
+   ----------------------------------------------------------------------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.botao--denuncia {
+  background: var(--accent-denuncia);
+  color: #fff;
+}
+.botao--denuncia:hover { background: var(--accent-denuncia-dark); }
+
+.botao--admin {
+  background: var(--accent-admin);
+  color: #fff;
+}
+.botao--admin:hover { background: var(--accent-admin-dark); }
+
+.botao--linha {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--navy-800);
+}
+.botao--linha:hover { background: #eceff2; }
+
+.botao--sutil {
+  background: transparent;
+  color: #eef1f5;
+  border-color: #3a4a67;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+.botao--sutil:hover { background: var(--navy-700); }
+
+.botao--bloco { width: 100%; }
+.botao:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* -------------------------------------------------------------------------
+   6. Tela inicial — seleção de perfil
+   ----------------------------------------------------------------------- */
+.hero {
+  padding: 1.5rem 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+}
+
+.hero__eyebrow {
+  color: var(--accent-denuncia);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0 0 0.6rem;
+}
+
+.hero p {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.selecao-perfis {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.cartao-perfil {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-soft);
+  border-top: 3px solid var(--border);
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.cartao-perfil:hover {
+  transform: translateY(-2px);
+}
+
+.cartao-perfil--denuncia { border-top-color: var(--accent-denuncia); }
+.cartao-perfil--admin { border-top-color: var(--accent-admin); }
+
+.cartao-perfil__icone {
+  width: 40px;
+  height: 40px;
+}
+
+.cartao-perfil h2 { margin-bottom: 0.2rem; }
+
+.cartao-perfil p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+.cartao-perfil__cta {
+  margin-top: auto;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.cartao-perfil--denuncia .cartao-perfil__cta { color: var(--accent-denuncia); }
+.cartao-perfil--admin .cartao-perfil__cta { color: var(--accent-admin); }
+
+.aviso-sigilo {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--navy-700);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* -------------------------------------------------------------------------
+   7. Formulários
+   ----------------------------------------------------------------------- */
+.formulario {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-soft);
+  max-width: 42rem;
+}
+
+.campo {
+  margin-bottom: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.campo label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--navy-800);
+}
+
+.campo .dica {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+.campo-linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="file"],
+select,
+textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+
+textarea { resize: vertical; min-height: 7rem; }
+
+fieldset {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem 1rem;
+  margin: 0;
+}
+
+legend {
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0 0.35rem;
+}
+
+.opcoes-urgencia {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.opcoes-urgencia label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.acoes-formulario {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.mensagem-erro {
+  color: var(--accent-denuncia-dark);
+  font-size: 0.85rem;
+  margin-top: -0.2rem;
+}
+
+/* -------------------------------------------------------------------------
+   8. Abas (denunciante: registrar / acompanhar)
+   ----------------------------------------------------------------------- */
+.abas {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.75rem;
+}
+
+.abas__botao {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.7rem 0.2rem;
+  margin-right: 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+
+.abas__botao.ativa {
+  color: var(--navy-900);
+  border-bottom-color: var(--accent-denuncia);
+}
+
+.painel-aba { display: none; }
+.painel-aba.ativa { display: block; }
+
+/* -------------------------------------------------------------------------
+   9. Confirmação de protocolo
+   ----------------------------------------------------------------------- */
+.confirmacao {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-denuncia);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  max-width: 42rem;
+}
+
+.confirmacao__protocolo {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  background: var(--bg);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  display: inline-block;
+  margin: 0.75rem 0 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+/* -------------------------------------------------------------------------
+   10. Linha do tempo / histórico de status
+   ----------------------------------------------------------------------- */
+.linha-tempo {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border-left: 2px solid var(--border);
+}
+
+.linha-tempo li {
+  position: relative;
+  padding: 0 0 1.25rem 1.4rem;
+}
+
+.linha-tempo li::before {
+  content: '';
+  position: absolute;
+  left: -6.5px;
+  top: 0.25rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--navy-700);
+  border: 2px solid var(--surface);
+}
+
+.linha-tempo li:last-child::before {
+  background: var(--accent-admin);
+}
+
+.linha-tempo__status {
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.linha-tempo__data {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  margin-bottom: 0.15rem;
+}
+
+.linha-tempo__obs {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0.15rem 0 0;
+}
+
+/* -------------------------------------------------------------------------
+   11. Selo de status
+   ----------------------------------------------------------------------- */
+.selo-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: #eef0f2;
+  color: var(--navy-800);
+  white-space: nowrap;
+}
+
+.selo-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.selo-status--recebida { color: var(--status-recebida); }
+.selo-status--em_analise { color: var(--status-em_analise); }
+.selo-status--em_investigacao { color: var(--status-em_investigacao); }
+.selo-status--concluida { color: var(--status-concluida); }
+.selo-status--arquivada { color: var(--status-arquivada); }
+
+/* -------------------------------------------------------------------------
+   12. Login do administrador
+   ----------------------------------------------------------------------- */
+.tela-login {
+  max-width: 26rem;
+  margin: 2rem auto 0;
+}
+
+.tela-login .formulario { max-width: none; }
+
+/* -------------------------------------------------------------------------
+   13. Painel do administrador
+   ----------------------------------------------------------------------- */
+.resumo-status {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.cartao-resumo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--navy-600);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.cartao-resumo--recebida { border-left-color: var(--status-recebida); }
+.cartao-resumo--em_analise { border-left-color: var(--status-em_analise); }
+.cartao-resumo--em_investigacao { border-left-color: var(--status-em_investigacao); }
+.cartao-resumo--concluida { border-left-color: var(--status-concluida); }
+.cartao-resumo--arquivada { border-left-color: var(--status-arquivada); }
+
+.cartao-resumo__numero {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  display: block;
+}
+
+.cartao-resumo__rotulo {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.barra-filtros {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.barra-filtros .campo { margin-bottom: 0; min-width: 10rem; flex: 1; }
+.barra-filtros .campo--busca { flex: 1.4; }
+
+.tabela-denuncias {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.tabela-denuncias th,
+.tabela-denuncias td {
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+
+.tabela-denuncias th {
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: none;
+}
+
+.tabela-denuncias tbody tr:hover { background: #f8f9fb; }
+.tabela-denuncias tbody tr:last-child td { border-bottom: none; }
+
+.protocolo-mono {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
+.link-ver {
+  background: none;
+  border: none;
+  color: var(--accent-admin-dark);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.88rem;
+}
+.link-ver:hover { text-decoration: underline; }
+
+.estado-vazio {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ink-faint);
+}
+
+/* -------------------------------------------------------------------------
+   14. Modal de detalhes da denúncia (administrador)
+   ----------------------------------------------------------------------- */
+.sobreposicao-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 21, 38, 0.55);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.sobreposicao-modal[hidden] { display: none; }
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  max-width: 40rem;
+  width: 100%;
+  padding: 1.75rem;
+  position: relative;
+  box-shadow: 0 12px 32px rgba(13, 21, 38, 0.25);
+}
+
+.modal__fechar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink-faint);
+  padding: 0.25rem 0.5rem;
+}
+.modal__fechar:hover { color: var(--ink); }
+
+.modal__cabecalho {
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+}
+
+.modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.75rem;
+}
+
+.modal__secao { margin-top: 1.4rem; }
+.modal__secao h3 { margin-bottom: 0.5rem; font-size: 1rem; }
+
+.modal__descricao {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+.grade-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.25rem;
+  font-size: 0.88rem;
+}
+
+.grade-info dt {
+  color: var(--ink-faint);
+  font-size: 0.76rem;
+  margin-bottom: 0.15rem;
+}
+
+.grade-info dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* -------------------------------------------------------------------------
+   15. Responsividade
+   ----------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .resumo-status { grid-template-columns: repeat(2, 1fr); }
+  .selecao-perfis { grid-template-columns: 1fr; }
+  .campo-linha { grid-template-columns: 1fr; }
+  .grade-info { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  main { padding: 1.5rem 1rem 3rem; }
+  h1 { font-size: 1.6rem; }
+  .resumo-status { grid-template-columns: 1fr 1fr; }
+  .tabela-denuncias { display: block; overflow-x: auto; white-space: nowrap; }
+  .cabecalho__conteudo { padding: 0.8rem 1rem; }
+}
