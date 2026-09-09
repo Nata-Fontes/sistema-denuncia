@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Área do Denunciante | Delegacia Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="cabecalho">
+    <div class="cabecalho__conteudo">
+      <a href="index.html" class="marca">
+        <svg class="marca__selo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 2 34 8v10c0 10.5-6.5 16.9-14 20-7.5-3.1-14-9.5-14-20V8L20 2Z" fill="#1c2b45" stroke="#eef1f5" stroke-width="1.5"/>
+          <path d="M14 20.5 18 24.5 26 15.5" stroke="#eef1f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="marca__texto">
+          <span class="marca__titulo">Delegacia Digital</span>
+          <span class="marca__subtitulo">Área do Denunciante</span>
+        </span>
+      </a>
+      <div class="cabecalho__acoes">
+        <span class="etiqueta-perfil">Acesso anônimo — sem login</span>
+        <a href="index.html" class="botao botao--sutil">Voltar</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1>Área do Denunciante</h1>
+    <p>Registre uma nova denúncia ou consulte o andamento de um protocolo que você já possui.</p>
+
+    <nav class="abas" role="tablist" aria-label="Ações do denunciante">
+      <button class="abas__botao ativa" id="botao-aba-nova" role="tab" aria-selected="true" aria-controls="aba-nova">Nova denúncia</button>
+      <button class="abas__botao" id="botao-aba-acompanhar" role="tab" aria-selected="false" aria-controls="aba-acompanhar">Acompanhar denúncia</button>
+    </nav>
+
+    <!-- ==================== ABA: NOVA DENÚNCIA ==================== -->
+    <section id="aba-nova" class="painel-aba ativa" role="tabpanel" aria-labelledby="botao-aba-nova">
+
+      <form id="formulario-denuncia" class="formulario" novalidate>
+
+        <div class="campo">
+          <label for="campo-categoria">Categoria da denúncia</label>
+          <select id="campo-categoria" name="categoria" required>
+            <option value="" disabled selected>Selecione uma categoria</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="campo-titulo">Título resumido</label>
+          <input type="text" id="campo-titulo" name="titulo" maxlength="80" placeholder="Ex.: Perturbação do sossego em via pública" required />
+        </div>
+
+        <div class="campo">
+          <label for="campo-descricao">Descrição detalhada</label>
+          <textarea id="campo-descricao" name="descricao" placeholder="Descreva o que aconteceu, com o máximo de detalhes possível (datas, pessoas envolvidas, veículos, etc.)." required></textarea>
+        </div>
+
+        <div class="campo-linha">
+          <div class="campo">
+            <label for="campo-local">Local da ocorrência</label>
+            <input type="text" id="campo-local" name="local" placeholder="Rua, bairro ou ponto de referência" required />
+          </div>
+          <div class="campo">
+            <label for="campo-data">Data da ocorrência</label>
+            <input type="date" id="campo-data" name="dataOcorrencia" required />
+          </div>
+        </div>
+
+        <div class="campo">
+          <fieldset>
+            <legend>Nível de urgência</legend>
+            <div class="opcoes-urgencia">
+              <label><input type="radio" name="urgencia" value="baixa" checked /> Baixa</label>
+              <label><input type="radio" name="urgencia" value="media" /> Média</label>
+              <label><input type="radio" name="urgencia" value="alta" /> Alta — risco iminente</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="campo">
+          <label for="campo-anexo">Anexo (opcional)</label>
+          <input type="file" id="campo-anexo" name="anexo" accept="image/*,.pdf" />
+          <span class="dica">Neste protótipo o arquivo não é enviado a nenhum servidor — apenas o nome é registrado, como demonstração.</span>
+        </div>
+
+        <p id="mensagem-erro-formulario" class="mensagem-erro" hidden></p>
+
+        <div class="acoes-formulario">
+          <button type="submit" class="botao botao--denuncia">Registrar denúncia</button>
+          <button type="reset" class="botao botao--linha">Limpar campos</button>
+        </div>
+      </form>
+
+      <!-- Exibido após o envio, no lugar do formulário -->
+      <div id="bloco-confirmacao" class="confirmacao" hidden>
+        <h2>Denúncia registrada com sucesso</h2>
+        <p>Guarde o número de protocolo abaixo. Ele é a única forma de consultar o andamento do seu caso — o sistema não usa login nem dados pessoais.</p>
+        <span class="confirmacao__protocolo" id="texto-protocolo-gerado"></span>
+        <div class="acoes-formulario">
+          <button type="button" id="botao-nova-outra" class="botao botao--linha">Registrar outra denúncia</button>
+          <button type="button" id="botao-ir-acompanhar" class="botao botao--denuncia">Acompanhar esta denúncia</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABA: ACOMPANHAR DENÚNCIA ==================== -->
+    <section id="aba-acompanhar" class="painel-aba" role="tabpanel" aria-labelledby="botao-aba-acompanhar">
+
+      <form id="formulario-busca" class="formulario" novalidate>
+        <div class="campo">
+          <label for="campo-protocolo-busca">Número de protocolo</label>
+          <input type="text" id="campo-protocolo-busca" placeholder="Ex.: DN-2026-0001" required />
+          <span class="dica">Experimente também os protocolos de exemplo: DN-2026-0001 a DN-2026-0004.</span>
+        </div>
+        <div class="acoes-formulario">
+          <button type="submit" class="botao botao--denuncia">Consultar status</button>
+        </div>
+        <p id="mensagem-erro-busca" class="mensagem-erro" hidden></p>
+      </form>
+
+      <div id="resultado-consulta" style="margin-top: 1.75rem;"></div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    Protótipo educacional · os dados ficam salvos apenas neste navegador (localStorage).
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/denunciante.js"></script>
+</body>
+</html>

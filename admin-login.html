@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acesso do Administrador | Delegacia Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="cabecalho">
+    <div class="cabecalho__conteudo">
+      <a href="index.html" class="marca">
+        <svg class="marca__selo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 2 34 8v10c0 10.5-6.5 16.9-14 20-7.5-3.1-14-9.5-14-20V8L20 2Z" fill="#1c2b45" stroke="#eef1f5" stroke-width="1.5"/>
+          <path d="M14 20.5 18 24.5 26 15.5" stroke="#eef1f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="marca__texto">
+          <span class="marca__titulo">Delegacia Digital</span>
+          <span class="marca__subtitulo">Acesso do Administrador</span>
+        </span>
+      </a>
+      <div class="cabecalho__acoes">
+        <a href="index.html" class="botao botao--sutil">Voltar</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tela-login">
+      <h1>Painel da Delegacia</h1>
+      <p>Acesso restrito à equipe responsável pelo gerenciamento das denúncias.</p>
+
+      <form id="formulario-login" class="formulario" novalidate>
+        <div class="campo">
+          <label for="campo-usuario">Usuário</label>
+          <input type="text" id="campo-usuario" name="usuario" autocomplete="username" required />
+        </div>
+        <div class="campo">
+          <label for="campo-senha">Senha</label>
+          <input type="password" id="campo-senha" name="senha" autocomplete="current-password" required />
+        </div>
+
+        <p id="mensagem-erro-login" class="mensagem-erro" hidden></p>
+
+        <div class="acoes-formulario">
+          <button type="submit" class="botao botao--admin botao--bloco">Entrar</button>
+        </div>
+      </form>
+
+      <p class="dica" style="margin-top: 1rem;">
+        Credenciais de demonstração — usuário: <strong>admin</strong> · senha: <strong>delegacia123</strong>
+      </p>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    Protótipo educacional · autenticação simplificada, apenas para fins de demonstração.
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script>
+    document.getElementById('formulario-login').addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      const usuario = this.usuario.value;
+      const senha = this.senha.value;
+      const mensagemErro = document.getElementById('mensagem-erro-login');
+
+      if (AuthStore.login(usuario, senha)) {
+        window.location.href = 'admin.html';
+      } else {
+        mensagemErro.textContent = 'Usuário ou senha incorretos. Tente novamente.';
+        mensagemErro.hidden = false;
+      }
+    });
+
+    // Se já houver sessão ativa, pula direto para o painel.
+    if (AuthStore.sessaoAtiva()) {
+      window.location.href = 'admin.html';
+    }
+  </script>
+</body>
+</html>

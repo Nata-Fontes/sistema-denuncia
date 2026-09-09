@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo | Delegacia Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="cabecalho">
+    <div class="cabecalho__conteudo">
+      <a href="index.html" class="marca">
+        <svg class="marca__selo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 2 34 8v10c0 10.5-6.5 16.9-14 20-7.5-3.1-14-9.5-14-20V8L20 2Z" fill="#1c2b45" stroke="#eef1f5" stroke-width="1.5"/>
+          <path d="M14 20.5 18 24.5 26 15.5" stroke="#eef1f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="marca__texto">
+          <span class="marca__titulo">Delegacia Digital</span>
+          <span class="marca__subtitulo">Painel Administrativo</span>
+        </span>
+      </a>
+      <div class="cabecalho__acoes">
+        <span class="etiqueta-perfil">Usuário: admin</span>
+        <button id="botao-sair" class="botao botao--sutil">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1>Gerenciamento de denúncias</h1>
+    <p>Acompanhe, filtre e atualize o status das denúncias recebidas pelo sistema.</p>
+
+    <!-- Estatísticas rápidas -->
+    <section class="resumo-status" id="resumo-status" aria-label="Resumo por status"></section>
+
+    <!-- Filtros -->
+    <section class="barra-filtros" aria-label="Filtrar denúncias">
+      <div class="campo campo--busca">
+        <label for="filtro-busca">Buscar por protocolo ou título</label>
+        <input type="text" id="filtro-busca" placeholder="Ex.: DN-2026-0002 ou “vandalismo”" />
+      </div>
+      <div class="campo">
+        <label for="filtro-status">Status</label>
+        <select id="filtro-status">
+          <option value="">Todos</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="filtro-categoria">Categoria</label>
+        <select id="filtro-categoria">
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="filtro-urgencia">Urgência</label>
+        <select id="filtro-urgencia">
+          <option value="">Todas</option>
+          <option value="baixa">Baixa</option>
+          <option value="media">Média</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Lista de denúncias -->
+    <table class="tabela-denuncias">
+      <thead>
+        <tr>
+          <th scope="col">Protocolo</th>
+          <th scope="col">Título</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Urgência</th>
+          <th scope="col">Status</th>
+          <th scope="col">Registrada em</th>
+          <th scope="col"><span class="sr-only">Ações</span></th>
+        </tr>
+      </thead>
+      <tbody id="corpo-tabela-denuncias"></tbody>
+    </table>
+
+    <p id="estado-vazio" class="estado-vazio" hidden>Nenhuma denúncia encontrada com os filtros atuais.</p>
+  </main>
+
+  <footer class="rodape">
+    Protótipo educacional · dados armazenados apenas neste navegador (localStorage).
+  </footer>
+
+  <!-- Modal de detalhes / gerenciamento da denúncia -->
+  <div class="sobreposicao-modal" id="sobreposicao-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <button class="modal__fechar" id="modal-fechar" aria-label="Fechar detalhes da denúncia">&times;</button>
+
+      <div class="modal__cabecalho">
+        <h2 id="modal-titulo"></h2>
+        <div class="modal__meta" id="modal-meta"></div>
+      </div>
+
+      <dl class="grade-info">
+        <div><dt>Local</dt><dd id="modal-local"></dd></div>
+        <div><dt>Data da ocorrência</dt><dd id="modal-data-ocorrencia"></dd></div>
+        <div><dt>Anexo</dt><dd id="modal-anexo"></dd></div>
+        <div><dt>Registrada em</dt><dd id="modal-data-registro"></dd></div>
+      </dl>
+
+      <div class="modal__secao">
+        <h3>Descrição</h3>
+        <p class="modal__descricao" id="modal-descricao"></p>
+      </div>
+
+      <div class="modal__secao">
+        <h3>Histórico</h3>
+        <ul class="linha-tempo" id="modal-historico"></ul>
+      </div>
+
+      <div class="modal__secao">
+        <h3>Atualizar status</h3>
+        <form id="formulario-status">
+          <div class="campo">
+            <label for="modal-novo-status">Novo status</label>
+            <select id="modal-novo-status"></select>
+          </div>
+          <div class="campo">
+            <label for="modal-observacao">Observação interna (opcional)</label>
+            <textarea id="modal-observacao" placeholder="Ex.: Encaminhado à equipe de patrulhamento da região."></textarea>
+          </div>
+          <div class="acoes-formulario">
+            <button type="submit" class="botao botao--admin">Salvar atualização</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
